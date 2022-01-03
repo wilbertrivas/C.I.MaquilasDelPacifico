@@ -1,0 +1,583 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="2350" pageHeight="960" columnWidth="2350" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="35a06a73-a89f-43bd-9ad1-d0c54ea42b2c">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["src//Reportes//InformeAnual//"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaVentaI" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaVentaF" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  [ingresoProducto].[id] AS ingresoProducto_idFacturaCompra,
+      [ingresoProducto].[cp] AS ingresoProducto_cp,
+	  concat([proveedor].[nit],'-',[proveedor].[digitoVerificacion]) AS proveedor_nit, 
+	  [proveedor].[sucursal] AS ingresoProducto_proveedorSucursal,
+      [proveedor].[nombre] AS ingresoProducto_proveedorNombre,
+      [ingresoProducto].[producto_id] AS ingresoProducto_ProductoID ,
+      [ingresoProducto].[numeroFacturaProveedor] AS ingresoProducto_NumeroFacturaProveedor,
+      [ingresoProducto].[resolucionFactura] AS ingresoProducto_ResolicionFactura,
+      [ingresoProducto].[fechaResolucion] AS ingresoProducto_fechaResolucion,
+      [ingresoProducto].[fechaCompra] AS ingresoProducto_fechaCompra,
+      [ingresoProducto].[fechaMaximaExportacion] AS ingresoProducto_fechaMaximaExportacion,
+      [ingresoProducto].[cantidadInicial] AS ingresoProducto_cantidadInicial,
+      REPLACE(CONVERT (decimal(20,4), [ingresoProducto].[valorUnitario]), '.', ',') AS ingresoProducto_valorUnitario,
+      [ingresoProducto].[observacion] AS ingresoProducto_Observacion,
+      [ingresoProducto].[estado] AS ingresoProducto_estado,
+      [ingresoProducto].[nombreQuienElabora] AS ingresoProducto_nombreQuienElabora,
+      [ingresoProducto].[bodega_ingresoProductoInicial_id] AS ingresoProducto_bodegaIngresoProductoID,
+      REPLACE(CONVERT (decimal(20,4), [ingresoProducto].[costoTotal]), '.', ',') AS ingresoProducto_costoTotal,
+	  [bodega_ingresoProductoInicial].[descripcion] AS ingresoProducto_DescripcionBodegaCompra,
+	  [producto].[descripcion] AS producto_descripcion,
+	  [producto].[SubpartidaArancelaria] AS producto_SubpartidaArancelaria,
+	  [unidad].[descripcion] AS unidad_descripcion
+	  
+  FROM [maquilas].[dbo].[ingresoProducto]
+  
+  INNER JOIN [dbo].[producto] ON
+  [producto].[id]=[ingresoProducto].[producto_id]
+  
+   INNER JOIN [dbo].[unidad] ON
+  [producto].[unidad_id]=[unidad].[id]
+
+  INNER JOIN [dbo].[bodega_ingresoProductoInicial] ON
+  [bodega_ingresoProductoInicial].[id]=[ingresoProducto].[bodega_ingresoProductoInicial_id]
+  INNER JOIN [dbo].[proveedor]  
+		ON 	[proveedor].[nit] = [ingresoProducto].[proveedor_nit]
+			AND [proveedor].[sucursal] = [ingresoProducto].[proveedor_sucursal]		
+		WHERE ([ingresoProducto].[estado]=1 OR [ingresoProducto].[estado]=0) AND [ingresoProducto].[fechaCompra]  
+		BETWEEN CAST($P{fechaVentaI} AS DATE) AND CAST($P{fechaVentaF} AS DATE) ;]]>
+	</queryString>
+	<field name="ingresoProducto_idFacturaCompra" class="java.lang.Integer"/>
+	<field name="ingresoProducto_cp" class="java.lang.String"/>
+	<field name="proveedor_nit" class="java.lang.String"/>
+	<field name="ingresoProducto_proveedorSucursal" class="java.lang.Short"/>
+	<field name="ingresoProducto_proveedorNombre" class="java.lang.String"/>
+	<field name="ingresoProducto_ProductoID" class="java.lang.Integer"/>
+	<field name="ingresoProducto_NumeroFacturaProveedor" class="java.lang.String"/>
+	<field name="ingresoProducto_ResolicionFactura" class="java.lang.String"/>
+	<field name="ingresoProducto_fechaResolucion" class="java.sql.Date"/>
+	<field name="ingresoProducto_fechaCompra" class="java.sql.Date"/>
+	<field name="ingresoProducto_fechaMaximaExportacion" class="java.sql.Date"/>
+	<field name="ingresoProducto_cantidadInicial" class="java.lang.Long"/>
+	<field name="ingresoProducto_valorUnitario" class="java.lang.String"/>
+	<field name="ingresoProducto_Observacion" class="java.lang.String"/>
+	<field name="ingresoProducto_estado" class="java.lang.Integer"/>
+	<field name="ingresoProducto_nombreQuienElabora" class="java.lang.String"/>
+	<field name="ingresoProducto_bodegaIngresoProductoID" class="java.lang.Integer"/>
+	<field name="ingresoProducto_costoTotal" class="java.lang.String"/>
+	<field name="ingresoProducto_DescripcionBodegaCompra" class="java.lang.String"/>
+	<field name="producto_descripcion" class="java.lang.String"/>
+	<field name="producto_SubpartidaArancelaria" class="java.lang.String"/>
+	<field name="unidad_descripcion" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="108" height="16" backcolor="#CCCCCC" uuid="f7f27c61-7e72-4982-b16e-2fd758a88846"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[No FACTURA COMPRA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="108" y="0" width="101" height="16" backcolor="#CCCCCC" uuid="0d2393fc-4eac-4280-9ac1-24b6a3ba3833"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="209" y="0" width="243" height="16" backcolor="#CCCCCC" uuid="2dfdf8dd-f33a-49cd-b62b-85efea9e6a5c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NOMBRE PROVEEDOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="522" y="0" width="108" height="16" backcolor="#CCCCCC" uuid="da20a0db-af8d-4f69-89b1-7c4a82033684"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NIT PROVEEDOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="630" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="ec4733a9-503f-488b-8045-183d048230a2"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[No FACTURA PROVEEDOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="762" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="744d6cf0-48b8-4b2f-81a8-9e635c43ef61"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[RESOLUCIÓN FACTURACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1290" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="fa4cf5e3-79e2-4209-9156-3ba332f47c9b"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1158" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="fcce4f00-4cce-47bf-b223-557b067cbf28"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[FECHA MAX. EXPORTACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1026" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="aaae2d48-b2a0-40b0-9d12-392c4198e993"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[FECHA COMPRA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="894" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="2729f86b-2bea-4bf7-b3d4-ca8b6660dc4a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[FECHA RESOLUCION FACT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1422" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="7fcb053e-e349-4062-875b-88069a57960f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[VALOR UNITARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1554" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="60be0c4c-442d-4d82-8135-df2aa8837f9f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[COSTO TOTAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1686" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="521e7e9c-0523-43c6-ad0f-966f4ff3f3ba"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[BODEGA DE COMPRA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1818" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="f209be43-685f-4120-b56a-319c138c793c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1950" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="aaf2d37d-db0e-4bfc-aa84-df9b0db49dee"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[UNIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2082" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="a88dda55-80bf-4f7a-bf6b-a09f6a00112e"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[SUBPARTIDAD ARANC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2214" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="60a8dab4-724a-4cd6-8b00-ed7ba8dd5f5f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NOMBRE QUIEN REALIZA FACT.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="452" y="0" width="70" height="16" backcolor="#CCCCCC" uuid="747e81f2-9973-4a1e-9b4c-01b883115e22"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[SUCURSAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="108" height="15" uuid="8ea444fc-27a3-4708-b2ea-a74dca1c7313"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_idFacturaCompra}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="0" width="101" height="15" uuid="60f1574e-9659-4347-97b1-6aec1788c188"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_cp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="209" y="0" width="243" height="15" uuid="c1520177-6fa5-4a39-ad9f-7512cb4d3337"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_proveedorNombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="522" y="0" width="108" height="15" uuid="bf13c3b9-01c4-4fff-9387-4dbce3c9ae20"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{proveedor_nit}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="630" y="0" width="132" height="15" uuid="8dfbb1b5-9a7c-49b2-b25a-cf8b3c15a817"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_NumeroFacturaProveedor}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="762" y="0" width="132" height="15" uuid="0b0f47f5-43b8-4632-8440-b61002b68936"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_ResolicionFactura}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1686" y="0" width="132" height="15" uuid="e82c0b17-0cd9-4316-925a-23219284986d"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_DescripcionBodegaCompra}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1554" y="0" width="132" height="15" uuid="82f487d3-0b99-4445-a29b-f9be6d536310"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_costoTotal}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1818" y="0" width="132" height="15" uuid="69b22e6f-a7f2-4fc4-8f45-5269add90148"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{producto_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="894" y="0" width="132" height="15" uuid="d2fc6540-37bc-42a4-a779-31f7e77e9075"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_fechaResolucion}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1026" y="0" width="132" height="15" uuid="f44eb591-40b9-420e-b72c-ec3fb6da4bf8"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_fechaCompra}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1158" y="0" width="132" height="15" uuid="ae2b7995-7476-455c-b4fa-899ef639c96f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_fechaMaximaExportacion}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1290" y="0" width="132" height="15" uuid="e3269483-49d8-4027-a1ce-39f3c7877162"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_cantidadInicial}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1422" y="0" width="132" height="15" uuid="981e4ccf-27ef-44ab-8d14-5bbe371562e8"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_valorUnitario}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1950" y="0" width="132" height="15" uuid="dbc02d68-d3e2-4c34-8d11-fe505c35f6db"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{unidad_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2082" y="0" width="132" height="15" uuid="ef80af83-1837-4ff1-8408-3be49522334a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{producto_SubpartidaArancelaria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="2214" y="0" width="132" height="15" uuid="6e7d7325-9402-4aac-9c2b-c2bce306c0e5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_nombreQuienElabora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="452" y="0" width="70" height="15" uuid="9e75e3e8-ef00-44f2-8bae-48849d17c529"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_proveedorSucursal}.toString()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="14"/>
+	</summary>
+</jasperReport>

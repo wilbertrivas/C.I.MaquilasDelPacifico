@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["src//Reportes//Usuario//"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT [usuario].[id] AS usuario_ID
+      ,[usuario].[empresaLocal_nit] AS Empresa_Nit
+      ,[empresaLocal].[digitoVerificacion] AS Empresa_DigiVerificacion
+	  ,[usuario].[empresaLocal_sucursal] AS Empresa_Sucursal
+      ,[empresaLocal].[nombre] AS Empresa_Nombre
+      ,[usuario].[user] AS usuario_User
+      ,CONCAT([usuario].[nombre],'',[usuario].[apellido]) AS Usuario_nombreCompleto
+      ,[usuario].[celular] AS Usuario_celular
+      ,[usuario].[telefono] AS Usuario_telefono
+      ,[usuario].[correo] AS Usuario_correo
+      ,[usuario].[estado] AS Usuario_estado
+  FROM [dbo].[usuario]
+	INNER JOIN [dbo].[empresaLocal] 
+		ON  [empresaLocal].[nit] = [usuario].[empresaLocal_nit]
+			AND [empresaLocal].[sucursal] = [usuario].[empresaLocal_sucursal] 
+WHERE [usuario].[estado]=1]]>
+	</queryString>
+	<field name="usuario_ID" class="java.lang.Integer"/>
+	<field name="Empresa_Nit" class="java.lang.Long"/>
+	<field name="Empresa_DigiVerificacion" class="java.lang.Short"/>
+	<field name="Empresa_Sucursal" class="java.lang.Short"/>
+	<field name="Empresa_Nombre" class="java.lang.String"/>
+	<field name="usuario_User" class="java.lang.String"/>
+	<field name="Usuario_nombreCompleto" class="java.lang.String"/>
+	<field name="Usuario_celular" class="java.lang.String"/>
+	<field name="Usuario_telefono" class="java.lang.String"/>
+	<field name="Usuario_correo" class="java.lang.String"/>
+	<field name="Usuario_estado" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="126" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="126"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Reporte_EncabezadoMaquilas.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="19" splitType="Stretch">
+			<staticText>
+				<reportElement x="185" y="1" width="231" height="18"/>
+				<textElement>
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[LISTADO DE USUARIOS ACTIVOS]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="67" height="15" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[USUARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="67" y="0" width="176" height="15" forecolor="#000000" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NOMBRE COMPLETO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="243" y="0" width="136" height="15" forecolor="#000000" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CELULAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="0" width="122" height="15" forecolor="#000000" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="10" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CORREO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="67" height="15"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{usuario_User}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="67" y="0" width="176" height="15"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Usuario_nombreCompleto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="243" y="0" width="136" height="15"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Usuario_celular}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="379" y="0" width="122" height="15"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Usuario_correo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="81" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

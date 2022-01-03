@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.6105100000000008"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="226"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["src//Reportes//VentasElectronica//"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idFacturaVenta" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT TOP 1	
+concat([empresaLocal].[nit],'-',[empresaLocal].[digitoVerificacion]) AS empLocal_nit, 
+		[empresaLocal].[sucursal] AS empLocal_sucursal,
+		[empresaLocal].[nombre] AS empLocal_nombre,
+		[empresaLocal].[direccion] AS empLocal_direccion, 
+		concat([empresaLocal].[telefono],'/',[empresaLocal].[celular]) AS empLocal_datos, 
+		[empresaLocal].[correo] AS empLocal_correo,
+		[empresaLocal].[ciudad] AS empLocal_ciudad, 
+        [facturaVentaElectronica].[id] AS facturaVenta_idFacturaVenta, 		
+		[facturaVentaElectronica].[dex] AS facturaVenta_dex, 
+		[facturaVentaElectronica].[fechaFactura] AS facturaVenta_fechaFactura,
+		[facturaVentaElectronica].[trm] AS facturaVenta_TRM,
+concat('US$ ', CONVERT(varchar, convert(money, [facturaVentaElectronica].[valorTotalDolarIngresados]), 1))
+		 AS facturaVenta_valorTotalDolar,
+concat('$ ', CONVERT(varchar, (convert(money, ([facturaVentaElectronica].[valorTotalDolarCalculados] *[facturaVentaElectronica].[trm]))), 1))
+		 AS facturaVenta_valorTotalPesos,
+		[facturaVentaElectronica].[observaciones] AS facturaVenta_observaciones,
+		[facturaVentaElectronica].[nombreQuienElabora] AS facturaVenta_nombreQuienElabora,					
+		concat([cliente].[nit],'-',
+		[cliente].[digitoVerificacion]) AS cliente_nit, 
+		[cliente].[sucursal] AS cliente_sucursal, 
+		[cliente].[nombre] AS cliente_nombre, 
+		[cliente].[direccion] AS cliente_direccion,
+		concat([cliente].[telefono], '/',
+		[cliente].[celular]) AS cliente_datos, 
+		[cliente].[ciudad] AS cliente_ciudad,
+		[cliente].[correo] AS cliente_correo,		
+		[producto].[descripcion] AS producto_nombre,
+		[producto].[tipo] AS producto_tipoProducto,
+		[producto].[SubpartidaArancelaria] AS producto_Subpartida, 		
+		[unidad].[descripcion] AS unidad_nombre, 
+		[CantidadSumada].[cantidadGeneral] AS facturaVenta_Cantidad,	
+concat('$ ', CONVERT(varchar, convert(money, [itemFacturaElectronica].[valorUnitarioKilo]*[facturaVentaElectronica].[trm]), 1))	
+		 AS facturaVenta_PrecioKilo,
+		[itemFacturaElectronica].[total] AS facturaVenta_Total					
+ FROM [maquilas].[dbo].[facturaVentaElectronica] 
+	INNER JOIN [dbo].[empresaLocal] 
+		ON [facturaVentaElectronica].[empresaLocal_nit]=[empresaLocal].[nit] 
+			AND [facturaVentaElectronica].[empresaLocal_sucursal]=[empresaLocal].[sucursal] 
+	INNER JOIN [dbo].[usuario] 
+		ON  [empresaLocal].[nit] = [usuario].[empresaLocal_nit]
+			AND [empresaLocal].[sucursal] = [usuario].[empresaLocal_sucursal] 
+	INNER JOIN [dbo].[cliente]  
+		ON 	[cliente].[nit] = [facturaVentaElectronica].[cliente_nit]
+			AND [cliente].[sucursal] = [facturaVentaElectronica].[cliente_sucursal]
+	INNER JOIN [dbo].[itemFacturaElectronica]  
+		ON [facturaVentaElectronica].[id] = [itemFacturaElectronica].[facturaVentaElectronica_id]
+	INNER JOIN [dbo].[ingresoProducto]  
+		ON [itemFacturaElectronica].[ingresoProducto_id] = [ingresoProducto].[id]
+	INNER JOIN [dbo].[producto] 
+		ON	[ingresoProducto].[producto_id] = [producto].[id]
+	INNER JOIN [dbo].[unidad] 
+		ON [unidad].[id] =[producto].[unidad_id]
+	INNER JOIN [dbo].[bodegaFacturaVenta] 
+		ON [bodegaFacturaVenta].[id] =[facturaVentaElectronica].[bodegaFacturaVenta_id]
+		INNER JOIN (SELECT facturaVentaElectronica_id AS tablaX ,SUM(cantidad) AS cantidadGeneral FROM [dbo].[itemFacturaElectronica] WHERE facturaVentaElectronica_id=$P{idFacturaVenta} GROUP BY facturaVentaElectronica_id) AS CantidadSumada
+		ON [CantidadSumada].[tablaX]=[facturaVentaElectronica].id
+	WHERE [facturaVentaElectronica].[id]=$P{idFacturaVenta};]]>
+	</queryString>
+	<field name="empLocal_nit" class="java.lang.String"/>
+	<field name="empLocal_sucursal" class="java.lang.Short"/>
+	<field name="empLocal_nombre" class="java.lang.String"/>
+	<field name="empLocal_direccion" class="java.lang.String"/>
+	<field name="empLocal_datos" class="java.lang.String"/>
+	<field name="empLocal_correo" class="java.lang.String"/>
+	<field name="empLocal_ciudad" class="java.lang.String"/>
+	<field name="facturaVenta_idFacturaVenta" class="java.lang.Integer"/>
+	<field name="facturaVenta_dex" class="java.lang.String"/>
+	<field name="facturaVenta_fechaFactura" class="java.sql.Date"/>
+	<field name="facturaVenta_TRM" class="java.lang.Double"/>
+	<field name="facturaVenta_valorTotalDolar" class="java.lang.String"/>
+	<field name="facturaVenta_valorTotalPesos" class="java.lang.String"/>
+	<field name="facturaVenta_observaciones" class="java.lang.String"/>
+	<field name="facturaVenta_nombreQuienElabora" class="java.lang.String"/>
+	<field name="cliente_nit" class="java.lang.String"/>
+	<field name="cliente_sucursal" class="java.lang.Short"/>
+	<field name="cliente_nombre" class="java.lang.String"/>
+	<field name="cliente_direccion" class="java.lang.String"/>
+	<field name="cliente_datos" class="java.lang.String"/>
+	<field name="cliente_ciudad" class="java.lang.String"/>
+	<field name="cliente_correo" class="java.lang.String"/>
+	<field name="producto_nombre" class="java.lang.String"/>
+	<field name="producto_tipoProducto" class="java.lang.String"/>
+	<field name="producto_Subpartida" class="java.lang.String"/>
+	<field name="unidad_nombre" class="java.lang.String"/>
+	<field name="facturaVenta_Cantidad" class="java.lang.Integer"/>
+	<field name="facturaVenta_PrecioKilo" class="java.lang.String"/>
+	<field name="facturaVenta_Total" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="126" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="126"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Reporte_EncabezadoMaquilas.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="120" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="5" width="291" height="115"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="25" width="84" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NIT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="10" width="84" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CLIENTE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="40" width="84" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[DIRECCION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="55" width="84" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[DATOS CONTACTO:]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement x="304" y="5" width="252" height="115"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="317" y="40" width="110" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[DEX:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="10" width="110" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[FACTURA VENTA No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="70" width="110" height="15" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[BODEGA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="55" width="110" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[TRM:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="10" width="197" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cliente_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="25" width="197" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cliente_nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="40" width="197" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cliente_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="55" width="197" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{cliente_datos}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="427" y="70" width="128" height="15" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[EXTRANJERA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="427" y="10" width="128" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facturaVenta_idFacturaVenta}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="40" width="128" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facturaVenta_dex}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="55" width="129" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facturaVenta_TRM}.toString()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="317" y="25" width="110" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[FECHA FACTURA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="427" y="25" width="128" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facturaVenta_fechaFactura}.toString()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="427" y="85" width="126" height="15" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ELECTRÓNICA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="85" width="110" height="15" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[TIPO FACTURA:]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="17" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="108" height="15" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[SUBPARTIDA ARANC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="108" y="0" width="101" height="15" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="209" y="0" width="100" height="15" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="0" width="108" height="15" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[UNIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="0" width="132" height="15" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[VALOR UNITARIO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="151" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="228" y="29" width="327" height="45"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="253" y="29" width="284" height="12"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[VALOR TOTAL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="0" width="108" height="15"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{producto_Subpartida}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="0" width="101" height="15"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{producto_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="209" y="0" width="100" height="15"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facturaVenta_Cantidad}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="309" y="0" width="108" height="15"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{unidad_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="253" y="41" width="284" height="20"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facturaVenta_valorTotalPesos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="417" y="0" width="132" height="15"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facturaVenta_PrecioKilo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="99" width="555" height="52" forecolor="#666666"/>
+				<textElement textAlignment="Center" rotation="None">
+					<font size="36" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[ANULADA]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="52" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="98" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="10" y="8" width="515" height="70"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="23" y="39" width="85" height="20"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ELABORÓ:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="8" width="84" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[OBSERVACIÓN:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="108" y="39" width="405" height="20"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facturaVenta_nombreQuienElabora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="8" width="405" height="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{facturaVenta_observaciones}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

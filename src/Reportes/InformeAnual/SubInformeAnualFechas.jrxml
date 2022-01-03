@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="660" pageHeight="3368" columnWidth="660" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="2.2578957202151093"/>
+	<property name="ireport.x" value="939"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\wrivas\\Music\\Proyecto_Final_Pesquera_Duvan\\Proyecto_Final_Pesquera_Duvan\\maquilas\\src\\Reportes\\Bodega\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idFactura" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+[producto].[descripcion] as product_Descripcion,
+[producto].[SubpartidaArancelaria] as product_SubpartidaArancelaria,
+[ingresoProducto].[cp] as ingresoProduct_cp ,
+[itemFactura].[cantidad] AS itemFact_Cantidad,
+REPLACE(CONVERT (decimal(20,4), [itemFactura].[valorUnitarioKilo]), '.', ',') AS itemFact_ValorUnitarioKilo
+ FROM [maquilas].[dbo].[facturaVenta] 
+	INNER JOIN [dbo].[cliente]  
+		ON 	[cliente].[nit] = [facturaVenta].[cliente_nit]
+			AND [cliente].[sucursal] = [facturaVenta].[cliente_sucursal]		
+	INNER JOIN [dbo].[tipoCliente]	
+		ON [tipoCliente].[id] =[cliente].[tipoCliente_id]
+		
+	INNER JOIN [dbo].[bodegaFacturaVenta] 
+		ON [bodegaFacturaVenta].[id] =[facturaVenta].[bodegaFacturaVenta_id]
+		
+	INNER JOIN [dbo].[itemFactura] 
+		ON [itemFactura].[facturaVenta_id] =[facturaVenta].[id]	
+		
+	INNER JOIN [dbo].[ingresoProducto]	
+		ON [ingresoProducto].[id] =[itemFactura].[ingresoProducto_id]
+		
+	INNER JOIN [dbo].[producto]
+		ON [producto].[id] =[ingresoProducto].[producto_id]
+		
+	INNER JOIN [dbo].[unidad]	
+		ON [unidad].[id] =[producto].[unidad_id]		
+	
+		
+	INNER JOIN [dbo].[bodega_ingresoProductoInicial]	
+		ON [bodega_ingresoProductoInicial].[id] =[ingresoProducto].[bodega_ingresoProductoInicial_id]
+	
+	INNER JOIN [dbo].[proveedor]  
+		ON 	[proveedor].[nit] = [ingresoProducto].[proveedor_nit]
+			AND [proveedor].[sucursal] = [ingresoProducto].[proveedor_sucursal]
+			
+	INNER JOIN [dbo].[tipoProveedor]	
+		ON [tipoProveedor].[id] =[proveedor].[tipoProveedor_id]
+		
+	INNER JOIN [dbo].[empresaLocal]  
+		ON 	[empresaLocal].[nit] = [facturaVenta].[empresaLocal_nit]
+			AND [empresaLocal].[sucursal] = [facturaVenta].[empresaLocal_sucursal]
+	
+	WHERE [facturaVenta].[estado]=1 AND [facturaVenta].[id] =$P{idFactura};]]>
+	</queryString>
+	<field name="product_Descripcion" class="java.lang.String"/>
+	<field name="product_SubpartidaArancelaria" class="java.lang.String"/>
+	<field name="ingresoProduct_cp" class="java.lang.String"/>
+	<field name="itemFact_Cantidad" class="java.lang.Integer"/>
+	<field name="itemFact_ValorUnitarioKilo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="132" y="0" width="132" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{product_SubpartidaArancelaria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="528" y="0" width="132" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{itemFact_ValorUnitarioKilo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="132" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{product_Descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="264" y="0" width="132" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ingresoProduct_cp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="396" y="0" width="132" height="15"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{itemFact_Cantidad}.toString()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

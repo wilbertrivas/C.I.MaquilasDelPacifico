@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="555" pageHeight="802" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT 
+  nombre,
+  CONCAT('NIT: ',[nit],'-',[digitoVerificacion]) AS nit,
+  CONCAT('Teléfono/Fax: ',[telefono],'/') AS telefono,
+  CONCAT([ciudad],'-VALLE DEL CAUCA') AS ciudad,
+  CONCAT('Correo: ', [correo]) AS correo
+FROM empresaLocal 
+WHERE estado=1;]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="nit" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="ciudad" class="java.lang.String"/>
+	<field name="correo" class="java.lang.String"/>
+	<group name="5rty5">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="108" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="0" width="555" height="104"/>
+			</rectangle>
+			<image>
+				<reportElement x="32" y="25" width="165" height="62"/>
+				<imageExpression class="java.lang.String"><![CDATA["src//Reportes//Logo.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="210" y="5" width="277" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="25" width="208" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="40" width="208" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="55" width="208" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ciudad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="72" width="208" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{correo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

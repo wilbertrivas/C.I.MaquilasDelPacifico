@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d49345ef-918e-4d37-80fc-7c9eef630644">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT 
+  nombre,
+  CONCAT('NIT: ',[nit],'-',[digitoVerificacion]) AS nit,
+  CONCAT('Teléfono/Fax: ',[telefono],'/') AS telefono,
+  CONCAT([ciudad],'-VALLE DEL CAUCA') AS ciudad,
+  CONCAT('Correo: ', [correo]) AS correo
+FROM empresaLocal 
+WHERE estado=1;]]>
+	</queryString>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="nit" class="java.lang.String"/>
+	<field name="telefono" class="java.lang.String"/>
+	<field name="ciudad" class="java.lang.String"/>
+	<field name="correo" class="java.lang.String"/>
+	<group name="5rty5">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="110" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="20" y="0" width="480" height="104" uuid="ceafa656-67ce-46ba-94f0-0353d6a4bb14"/>
+			</rectangle>
+			<image>
+				<reportElement x="32" y="25" width="165" height="62" uuid="638e3897-ac5d-41b2-99d0-ceaa144ec33d"/>
+				<imageExpression><![CDATA["src//Reportes//Logo.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="210" y="5" width="277" height="20" uuid="2939ac0a-b5bc-498c-b483-c9aba6a75f84"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="25" width="208" height="15" uuid="77ccbed4-5cf3-4fe6-b86e-0da7d36f4735"/>
+				<textFieldExpression><![CDATA[$F{nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="40" width="208" height="15" uuid="c1afc0db-8536-4c3f-9625-3107d0d9359a"/>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="55" width="208" height="15" uuid="5b6adcf2-be2c-424d-abba-9fa3d93377fe"/>
+				<textFieldExpression><![CDATA[$F{ciudad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="72" width="208" height="15" uuid="078f8fee-850e-4348-bc15-845210b2a933"/>
+				<textFieldExpression><![CDATA[$F{correo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="357"/>
+	<parameter name="id_ingresoProducto" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["src//Reportes//Compras//"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT  
+	DISTINCT [ingresoProducto].[id] AS ingresProduct_id,
+	[ingresoProducto].[cp] AS ingresProduct_cp,
+	[ingresoProducto].[numeroFacturaProveedor] AS ingresProduct_numeroFacturaProveedor,
+	[ingresoProducto].[resolucionFactura] AS ingresProduct_resolucionFactura,
+	[ingresoProducto].[fechaResolucion] AS ingresProduct_fechaResolucion,
+	[ingresoProducto].[fechaCompra] AS ingresProduct_fechaCompra,
+	[ingresoProducto].[fechaMaximaExportacion] AS ingresProduct_fechaMaximaExportacion,
+	concat('', CONVERT(varchar, convert(money, [ingresoProducto].[cantidadInicial]), 1)) AS ingresProductcantidadInicial,
+	concat('$ ', CONVERT(varchar, convert(money, [ingresoProducto].[valorUnitario]), 1)) AS ingresProduct_valorUnitario,
+	[ingresoProducto].[observacion] AS ingresProduct_observacion,
+	[ingresoProducto].[nombreQuienElabora] AS ingresProduct_nombreQuienElabora,
+	concat('$ ', CONVERT(varchar, convert(money, [ingresoProducto].[costoTotal]), 1)) AS ingresProduct_costoTotal,
+	[producto].[descripcion] AS prod_descripcion,
+	[producto].[tipo] AS produ_tipo,
+	[producto].[SubpartidaArancelaria] AS produ_SubPartidaAranc,
+	[unidad].[descripcion] AS unid_descrip,
+	[bodega_ingresoProductoInicial].[descripcion] AS bodega_IngresoProduct,
+	concat([proveedor].[nit],'-',[proveedor].[digitoVerificacion]) AS provee_nit,
+	[proveedor].[nombre] AS provee_nombre,
+	concat([proveedor].[telefono],' / ',[proveedor].[celular]) AS provee_datosContactos,
+	concat([proveedor].[direccion],'-',[proveedor].[ciudad]) AS provee_direccion,
+	[proveedor].[correo] AS provee_correo
+	
+FROM [dbo].[ingresoProducto]
+	INNER JOIN [dbo].[proveedor]
+		ON [proveedor].[nit]  =[ingresoProducto].[proveedor_nit] AND [proveedor].[sucursal]  =[ingresoProducto].[proveedor_sucursal]	
+	INNER JOIN [producto]
+		ON [ingresoProducto].[producto_id]  =[producto].[id]
+	INNER JOIN [unidad]
+		ON [producto].[unidad_id] = [unidad].[id]
+	INNER JOIN [bodega_ingresoProducto]
+		ON [bodega_ingresoProducto].[ingresoProducto_id] = [ingresoProducto].[id]
+	INNER JOIN [bodega] 
+		ON [bodega].[id] = [bodega_ingresoProducto].[bodega_id]
+	INNER JOIN [bodega_ingresoProductoInicial]
+		ON [bodega_ingresoProductoInicial].[id] = [ingresoProducto].[bodega_ingresoProductoInicial_id]
+ WHERE [ingresoProducto].[id] =$P{id_ingresoProducto};]]>
+	</queryString>
+	<field name="ingresProduct_id" class="java.lang.Integer"/>
+	<field name="ingresProduct_cp" class="java.lang.String"/>
+	<field name="ingresProduct_numeroFacturaProveedor" class="java.lang.String"/>
+	<field name="ingresProduct_resolucionFactura" class="java.lang.String"/>
+	<field name="ingresProduct_fechaResolucion" class="java.sql.Date"/>
+	<field name="ingresProduct_fechaCompra" class="java.sql.Date"/>
+	<field name="ingresProduct_fechaMaximaExportacion" class="java.sql.Date"/>
+	<field name="ingresProductcantidadInicial" class="java.lang.String"/>
+	<field name="ingresProduct_valorUnitario" class="java.lang.String"/>
+	<field name="ingresProduct_observacion" class="java.lang.String"/>
+	<field name="ingresProduct_nombreQuienElabora" class="java.lang.String"/>
+	<field name="ingresProduct_costoTotal" class="java.lang.String"/>
+	<field name="prod_descripcion" class="java.lang.String"/>
+	<field name="produ_tipo" class="java.lang.String"/>
+	<field name="produ_SubPartidaAranc" class="java.lang.String"/>
+	<field name="unid_descrip" class="java.lang.String"/>
+	<field name="bodega_IngresoProduct" class="java.lang.String"/>
+	<field name="provee_nit" class="java.lang.String"/>
+	<field name="provee_nombre" class="java.lang.String"/>
+	<field name="provee_datosContactos" class="java.lang.String"/>
+	<field name="provee_direccion" class="java.lang.String"/>
+	<field name="provee_correo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="126" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="126"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "Reporte_EncabezadoMaquilas.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="126" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="5" width="291" height="107"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="25" width="84" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NIT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="10" width="84" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[PROVEEDOR:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="40" width="84" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[DIRECCION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="55" width="84" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[DATOS CONTACTO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="10" width="185" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{provee_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="25" width="185" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{provee_nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="40" width="185" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{provee_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="55" width="185" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{provee_datosContactos}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement x="304" y="5" width="252" height="107"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="317" y="25" width="110" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[FECHA DE COMPRA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="10" width="110" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ENTRADA ALMACEN No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="55" width="110" height="15" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[BODEGA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="427" y="25" width="128" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ingresProduct_fechaCompra}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="55" width="128" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{bodega_IngresoProduct}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="317" y="40" width="110" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[No FACTURA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="427" y="40" width="128" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ingresProduct_numeroFacturaProveedor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="10" width="128" height="15"/>
+				<textElement verticalAlignment="Bottom"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{ingresProduct_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="70" width="23" height="15" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CP:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="34" y="70" width="257" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ingresProduct_cp}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="85" width="98" height="15" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[RESOLUCIÓN FACT.:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="108" y="85" width="183" height="15"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ingresProduct_resolucionFactura}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="17" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="108" height="15" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[SUBPARTIDA ARANC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="108" y="0" width="101" height="15" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="209" y="0" width="100" height="15" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="309" y="0" width="108" height="15" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[UNIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="0" width="132" height="15" backcolor="#CCCCCC"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[VALOR UNITARIO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="74" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="108" height="15"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{produ_SubPartidaAranc}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="0" width="101" height="15"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{prod_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="309" y="0" width="108" height="15"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{unid_descrip}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement x="228" y="29" width="328" height="45"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="253" y="29" width="284" height="12"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[VALOR TOTAL:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="253" y="41" width="284" height="20"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ingresProduct_costoTotal}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="209" y="0" width="100" height="15"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ingresProductcantidadInicial}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="417" y="0" width="132" height="15"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ingresProduct_valorUnitario}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="52" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="0" width="555" height="52" forecolor="#666666"/>
+				<textElement textAlignment="Center" rotation="None">
+					<font size="36" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[ANULADA]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="98" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="10" y="8" width="482" height="70"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="23" y="39" width="71" height="20"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ELABORÓ:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="8" width="71" height="20"/>
+				<textElement>
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[OBSERVACIÓN:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="39" width="388" height="20"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ingresProduct_nombreQuienElabora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="8" width="388" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{ingresProduct_observacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

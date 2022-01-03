@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="2083" pageHeight="960" columnWidth="2083" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5b80460f-9556-4890-a3b7-167337d46673">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="2556"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fechaVentaI" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaVentaF" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String">
+		<defaultValueExpression><![CDATA["src//Reportes//InformeAnual//"]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+	[facturaVenta].[id] AS facturaVenta_NoFactura,
+	[facturaVenta].[fechaFactura] AS facturaVenta__fecha,
+	[cliente].[nombre] AS cliente_nombre,
+	concat([cliente].[nit],'-',[cliente].[digitoVerificacion]) AS cliente_nit, 
+	[facturaVenta].[dex] AS facturaVenta_dex,
+	[bodegaFacturaVenta].[descripcion] AS facturaVenta_Bogeda,
+	REPLACE(CONVERT (decimal(20,4), [facturaVenta].[valorTotalDolarCalculados]), '.', ',') AS valorTotalDolarC,
+	REPLACE(CONVERT (decimal(20,2), [facturaVenta].[trm]), '.', ',') AS  trm,
+	REPLACE(CONVERT (decimal(20,4), [facturaVenta].[valorTotalDolarIngresados]), '.', ',') AS valorTotalDolar,
+	REPLACE(CONVERT (decimal(20,4), [facturaVenta].[valorTotalPesosCalculados]), '.', ',') AS valorTotalPesosCalculados 
+ FROM [maquilas].[dbo].[facturaVenta] 
+	INNER JOIN [dbo].[cliente]  
+		ON 	[cliente].[nit] = [facturaVenta].[cliente_nit]
+			AND [cliente].[sucursal] = [facturaVenta].[cliente_sucursal]
+	INNER JOIN [dbo].[bodegaFacturaVenta] 
+		ON [bodegaFacturaVenta].[id] =[facturaVenta].[bodegaFacturaVenta_id]
+WHERE [facturaVenta].[bodegaFacturaVenta_id] =1 AND [facturaVenta].[estado]=1 AND [facturaVenta].[fechaFactura] BETWEEN CAST($P{fechaVentaI} AS DATE) AND CAST($P{fechaVentaF} AS DATE) ;]]>
+	</queryString>
+	<field name="facturaVenta_NoFactura" class="java.lang.Integer"/>
+	<field name="facturaVenta__fecha" class="java.sql.Date"/>
+	<field name="cliente_nombre" class="java.lang.String"/>
+	<field name="cliente_nit" class="java.lang.String"/>
+	<field name="facturaVenta_dex" class="java.lang.String"/>
+	<field name="facturaVenta_Bogeda" class="java.lang.String"/>
+	<field name="valorTotalDolarC" class="java.lang.String"/>
+	<field name="trm" class="java.lang.String"/>
+	<field name="valorTotalDolar" class="java.lang.String"/>
+	<field name="valorTotalPesosCalculados" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="108" height="16" backcolor="#CCCCCC" uuid="cd2c6a66-c44b-4348-b3ae-c10291b2af58"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[FECHA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="108" y="0" width="101" height="16" backcolor="#CCCCCC" uuid="c36724cb-6408-485b-b080-2508dac7f7da"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[FACTURA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="209" y="0" width="313" height="16" backcolor="#CCCCCC" uuid="d7f0a4bf-60f8-4470-89b5-4cd8e165683c"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CLIENTE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="522" y="0" width="108" height="16" backcolor="#CCCCCC" uuid="5f2a6777-f2f9-437f-b3e9-255fc23f57e8"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NIT]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="630" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="9c7097e2-10cd-450d-b41f-c3e70dc187a7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[DEX]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="762" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="fe161b3c-59f9-4600-b835-eb8bcd0744d1"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[BODEGA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1290" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="d385e281-fafe-4cce-a2b2-7701b9c08611"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1158" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="0f9a76de-0455-476a-acb5-bf28a8063fdd"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1026" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="2dc9c499-cb37-4718-bca6-9f07a48d5584"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[SUBPARTIDA ARANC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="894" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="b55ace42-ea9f-41b3-aedd-7330ccefa038"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[PRODUCTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1422" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="87ad1391-af6a-4ac9-90e6-cfbdaedfc2af"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[VALOR UNITARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1554" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="e985b82e-f853-4525-aa40-49c47589734f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[VALOR TOTAL DOLARES CALC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1686" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="5e4241c6-f345-467c-a286-c1a1a51de61f"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[TRM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1818" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="3f21eb75-9daf-49d5-b93c-7dc43bcd69f4"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[VALOR TOTAL DOLARES ING.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1950" y="0" width="132" height="16" backcolor="#CCCCCC" uuid="870b2e5a-cd7d-4ad2-bd47-a98ee67156c2"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[VALOR TOTAL PESOS CALC.]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="108" height="15" uuid="6ee11a66-c291-4a24-afb0-3d0ec77cd70a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturaVenta__fecha}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="0" width="101" height="15" uuid="58922d51-3a9b-4c27-bdd6-b740ff99e5e7"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturaVenta_NoFactura}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="209" y="0" width="313" height="15" uuid="cdff228e-2d83-47a0-8c43-4c02ca1ac87d"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="522" y="0" width="108" height="15" uuid="75c15ff2-f90f-409c-b052-b75d823987f5"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente_nit}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="630" y="0" width="132" height="15" uuid="47fb8952-0034-4185-80eb-ecdf123bda0a"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturaVenta_dex}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="762" y="0" width="132" height="15" uuid="d25d6981-cfb8-47b8-89b5-57065b4d4578"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{facturaVenta_Bogeda}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="894" y="0" width="660" height="15" isPrintInFirstWholeBand="true" uuid="d0a682ff-96ad-46ca-9417-af7d0b0ab604"/>
+				<subreportParameter name="idFactura">
+					<subreportParameterExpression><![CDATA[$F{facturaVenta_NoFactura}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubInformeAnualFechas.jasper"]]></subreportExpression>
+			</subreport>
+			<textField>
+				<reportElement x="1686" y="0" width="132" height="15" uuid="89d73453-f256-4963-833a-e9ea6d919810"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{trm}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1554" y="0" width="132" height="15" uuid="fd8d0228-b3a1-4e29-b948-f84c15bbc4f4"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{valorTotalDolarC}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1818" y="0" width="132" height="15" uuid="1ceaa064-550e-4894-87c3-0b3dcde246a3"/>
+				<box>
+					<pen lineWidth="0.5"/>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{valorTotalDolar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1950" y="0" width="132" height="15" uuid="81f3f5bf-7f64-4ff1-94a2-0894b4d123fc"/>
+				<box>
+					<pen lineWidth="1.0"/>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{valorTotalPesosCalculados}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="15">
+			<subreport>
+				<reportElement x="1422" y="0" width="264" height="15" uuid="48b8f32a-d11d-410c-bbb1-6873e4224e08"/>
+				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="fechaVentaI">
+					<subreportParameterExpression><![CDATA[$P{fechaVentaI}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechaVentaF">
+					<subreportParameterExpression><![CDATA[$P{fechaVentaF}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubInformeAnualValorTotalPesos.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="1686" y="0" width="264" height="15" uuid="dccbfbe3-cce4-46b2-8ac7-1043ac2bdbc8"/>
+				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="fechaVentaI">
+					<subreportParameterExpression><![CDATA[$P{fechaVentaI}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="fechaVentaF">
+					<subreportParameterExpression><![CDATA[$P{fechaVentaF}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubInformeAnualValorTotaDolar.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d42557b6-f006-453c-8474-b35158d37340">
+	<property name="ireport.zoom" value="0.9075000000000005"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["src//Reportes//ConsumoCamarones//"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idConsumo" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT 
+    [consumo].[id] AS consumo_id,
+	[consumo].[fechaConsumo] AS consumo_fechaConsumo,
+    [consumo].[bodegaConsumo_id] AS consumo_bodegaConsumo_id,
+    [consumo].[cliente_nit] AS consumo_cliente_nit,
+    [consumo].[cliente_sucursal] AS consumo_cliente_sucursal,
+    [consumo].[empresaLocal_nit] AS consumo_empresaLocal_nit,
+    [consumo].[empresaLocal_sucursal] AS consumo_empresaLocal_sucursal,
+    [consumo].[valorTotalPesos] AS consumo_valorTotalPesos,
+    [consumo].[observaciones] AS consumo_observaciones,
+    [consumo].[estado] AS consumo_estado,
+    [consumo].[nombreQuienElabora] AS consumo_nombreQuienElabora,
+	[itemConsumo].[ingresoProducto_id] AS itemConsumo_ingresoProducto_id,
+	[itemConsumo].[consumo_id] AS itemConsumo_consumo_id,
+    [itemConsumo].[cantidad] AS itemConsumo_cantidad,
+    concat('$ ', CONVERT(varchar, convert(money, [itemConsumo].[valorUnitario]), 1)) AS itemConsumo_valorUnitario,
+    concat('$ ', CONVERT(varchar, convert(money, [itemConsumo].[total]), 1)) AS itemConsumo_total,
+	[ingresoProducto].[id] AS ingresoProducto_id,
+	[ingresoProducto].[cp] AS ingresoProducto_cp,
+	[ingresoProducto].[proveedor_nit] AS ingresoProducto_proveedor_nit,
+	[ingresoProducto].[proveedor_sucursal] AS ingresoProducto_proveedor_sucursal,
+	[ingresoProducto].[producto_id] AS ingresoProducto_producto_id,
+	[ingresoProducto].[numeroFacturaProveedor] AS ingresoProducto_numeroFacturaProveedor,
+	[ingresoProducto].[resolucionFactura] AS ingresoProducto_resolucionFactura,
+	[ingresoProducto].[fechaResolucion] AS ingresoProducto_fechaResolucion,
+	[ingresoProducto].[fechaCompra] AS ingresoProducto_fechaCompra,
+	[ingresoProducto].[fechaMaximaExportacion] AS ingresoProducto_fechaMaximaExportacion,
+	[ingresoProducto].[cantidadInicial] AS ingresoProducto_cantidadInicial,
+	[ingresoProducto].[valorUnitario] AS ingresoProducto_valorUnitario,
+	[ingresoProducto].[observacion] AS ingresoProducto_observacion,
+	[ingresoProducto].[estado] AS ingresoProducto_estado,
+	[ingresoProducto].[nombreQuienElabora] AS ingresoProducto_nombreQuienElabora,
+	[ingresoProducto].[bodega_ingresoProductoInicial_id] AS ingresoProducto_bodega_ingresoProductoInicial_id,
+	[ingresoProducto].[costoTotal] AS ingresoProducto_costoTotal,
+	[bodegaConsumo].[id] AS bodegaConsumo_id,
+	[bodegaConsumo].[descripcion] AS bodegaConsumo_descripcion,
+	[bodegaConsumo].[estado] AS bodegaConsumo_estado,
+	[empresaLocal].[nit] AS empresaLocal_nit,
+	[empresaLocal].[digitoVerificacion] AS empresaLocal_digitoVerificacion,
+	[empresaLocal].[sucursal] AS empresaLocal_sucursal,
+	[empresaLocal].[nombre] AS empresaLocal_nombre,
+	[empresaLocal].[direccion] AS empresaLocal_direccion,
+	[empresaLocal].[telefono] AS empresaLocal_telefono,
+	[empresaLocal].[celular] AS empresaLocal_celular,
+	[empresaLocal].[correo] AS empresaLocal_correo,
+	[empresaLocal].[ciudad] AS empresaLocal_ciudad,
+	[empresaLocal].[estado] AS empresaLocal_estado,
+	[cliente].[nit] AS cliente_nit,
+    [cliente].[digitoVerificacion] AS cliente_digitoVerificacion,
+	[cliente].[sucursal] AS cliente_sucursal,
+	[cliente].[nombre] AS cliente_nombre,
+	[cliente].[tipoCliente_id] AS cliente_tipoCliente_id,
+	[cliente].[telefono] AS cliente_telefono,
+	[cliente].[celular] AS cliente_celular,
+	[cliente].[direccion] AS cliente_direccion,
+	[cliente].[correo] AS cliente_correo,
+	[cliente].[ciudad] AS cliente_ciudad,
+	[cliente].[observacion] AS cliente_observacion,
+	[cliente].[estado] AS cliente_estado, 
+	[producto].[id] AS producto_id,
+    [producto].[descripcion] AS producto_descripcion,
+    [producto].[tipo] AS producto_tipo,
+	[producto].[SubpartidaArancelaria] AS producto_SubpartidaArancelaria,
+	[producto].[unidad_id] AS producto_unidad_id,
+    [producto].[estado] AS producto_estado
+  
+	FROM [maquilas].[dbo].[ingresoProducto]
+		INNER JOIN [maquilas].[dbo].[itemConsumo]
+			ON [ingresoProducto].[id]=[itemConsumo].[ingresoProducto_id] 	
+		INNER JOIN [maquilas].[dbo].[consumo]
+			ON [consumo].[id] = [itemConsumo].[consumo_id]
+		INNER JOIN [maquilas].[dbo].[bodegaConsumo]
+			ON [bodegaConsumo].[id]=  [consumo].[bodegaConsumo_id]
+		INNER JOIN [maquilas].[dbo].[empresaLocal]
+			ON [empresaLocal].[nit] = [consumo].[empresaLocal_nit]
+				AND [empresaLocal].[sucursal] =[consumo].[empresaLocal_sucursal]	
+		INNER JOIN [maquilas].[dbo].[cliente]
+			ON [cliente].[nit] = [consumo].[cliente_nit]
+				AND [cliente].[sucursal] =[consumo].[cliente_sucursal]		
+		INNER JOIN [maquilas].[dbo].[producto]
+			ON [producto].[id] = [ingresoProducto].[producto_id]
+	WHERE [consumo].[id] =$P{idConsumo};]]>
+	</queryString>
+	<field name="consumo_id" class="java.lang.Integer"/>
+	<field name="consumo_fechaConsumo" class="java.sql.Date"/>
+	<field name="consumo_bodegaConsumo_id" class="java.lang.Integer"/>
+	<field name="consumo_cliente_nit" class="java.lang.Long"/>
+	<field name="consumo_cliente_sucursal" class="java.lang.Short"/>
+	<field name="consumo_empresaLocal_nit" class="java.lang.Long"/>
+	<field name="consumo_empresaLocal_sucursal" class="java.lang.Short"/>
+	<field name="consumo_valorTotalPesos" class="java.lang.Double"/>
+	<field name="consumo_observaciones" class="java.lang.String"/>
+	<field name="consumo_estado" class="java.lang.Integer"/>
+	<field name="consumo_nombreQuienElabora" class="java.lang.String"/>
+	<field name="itemConsumo_ingresoProducto_id" class="java.lang.Integer"/>
+	<field name="itemConsumo_consumo_id" class="java.lang.Integer"/>
+	<field name="itemConsumo_cantidad" class="java.lang.Integer"/>
+	<field name="itemConsumo_valorUnitario" class="java.lang.String"/>
+	<field name="itemConsumo_total" class="java.lang.String"/>
+	<field name="ingresoProducto_id" class="java.lang.Integer"/>
+	<field name="ingresoProducto_cp" class="java.lang.String"/>
+	<field name="ingresoProducto_proveedor_nit" class="java.lang.Long"/>
+	<field name="ingresoProducto_proveedor_sucursal" class="java.lang.Short"/>
+	<field name="ingresoProducto_producto_id" class="java.lang.Integer"/>
+	<field name="ingresoProducto_numeroFacturaProveedor" class="java.lang.String"/>
+	<field name="ingresoProducto_resolucionFactura" class="java.lang.String"/>
+	<field name="ingresoProducto_fechaResolucion" class="java.sql.Date"/>
+	<field name="ingresoProducto_fechaCompra" class="java.sql.Date"/>
+	<field name="ingresoProducto_fechaMaximaExportacion" class="java.sql.Date"/>
+	<field name="ingresoProducto_cantidadInicial" class="java.lang.Long"/>
+	<field name="ingresoProducto_valorUnitario" class="java.lang.Double"/>
+	<field name="ingresoProducto_observacion" class="java.lang.String"/>
+	<field name="ingresoProducto_estado" class="java.lang.Integer"/>
+	<field name="ingresoProducto_nombreQuienElabora" class="java.lang.String"/>
+	<field name="ingresoProducto_bodega_ingresoProductoInicial_id" class="java.lang.Integer"/>
+	<field name="ingresoProducto_costoTotal" class="java.lang.String"/>
+	<field name="bodegaConsumo_id" class="java.lang.Integer"/>
+	<field name="bodegaConsumo_descripcion" class="java.lang.String"/>
+	<field name="bodegaConsumo_estado" class="java.lang.Integer"/>
+	<field name="empresaLocal_nit" class="java.lang.Long"/>
+	<field name="empresaLocal_digitoVerificacion" class="java.lang.Short"/>
+	<field name="empresaLocal_sucursal" class="java.lang.Short"/>
+	<field name="empresaLocal_nombre" class="java.lang.String"/>
+	<field name="empresaLocal_direccion" class="java.lang.String"/>
+	<field name="empresaLocal_telefono" class="java.lang.String"/>
+	<field name="empresaLocal_celular" class="java.lang.String"/>
+	<field name="empresaLocal_correo" class="java.lang.String"/>
+	<field name="empresaLocal_ciudad" class="java.lang.String"/>
+	<field name="empresaLocal_estado" class="java.lang.Integer"/>
+	<field name="cliente_nit" class="java.lang.Long"/>
+	<field name="cliente_digitoVerificacion" class="java.lang.Short"/>
+	<field name="cliente_sucursal" class="java.lang.Short"/>
+	<field name="cliente_nombre" class="java.lang.String"/>
+	<field name="cliente_tipoCliente_id" class="java.lang.Integer"/>
+	<field name="cliente_telefono" class="java.lang.String"/>
+	<field name="cliente_celular" class="java.lang.String"/>
+	<field name="cliente_direccion" class="java.lang.String"/>
+	<field name="cliente_correo" class="java.lang.String"/>
+	<field name="cliente_ciudad" class="java.lang.String"/>
+	<field name="cliente_observacion" class="java.lang.String"/>
+	<field name="cliente_estado" class="java.lang.Integer"/>
+	<field name="producto_id" class="java.lang.Integer"/>
+	<field name="producto_descripcion" class="java.lang.String"/>
+	<field name="producto_tipo" class="java.lang.String"/>
+	<field name="producto_SubpartidaArancelaria" class="java.lang.String"/>
+	<field name="producto_unidad_id" class="java.lang.Integer"/>
+	<field name="producto_estado" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="126" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="555" height="126" uuid="4c1510f2-73a8-4640-a335-4a42d0f8577e"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Reporte_EncabezadoMaquilas.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="120" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="5" width="291" height="78" uuid="7351b116-a451-4808-bc04-8a02b5faff4c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="10" y="25" width="84" height="15" uuid="a13924d4-9646-4616-8039-35027e7aba57"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[NIT:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="10" width="84" height="15" uuid="9980ead6-1d64-4b13-897e-854025ecff08"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CLIENTE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="40" width="84" height="15" uuid="6adc63a1-3341-48cd-8f11-63bf9e822360"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[DIRECCION:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="55" width="84" height="15" uuid="91fbbfdd-17b9-4046-abf1-18f8ef1db84c"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CIUDAD]]></text>
+			</staticText>
+			<rectangle radius="10">
+				<reportElement x="304" y="5" width="344" height="78" uuid="8041d07f-75e8-493f-8b6b-0298d9d9a806"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="317" y="10" width="110" height="15" uuid="bd09a7c3-84c1-47b9-a27c-3d56e0378cbc"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CONSUMO No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="40" width="110" height="15" backcolor="#CCCCCC" uuid="39766fa2-b9ab-407c-a51b-43c057ec7a23"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[BODEGA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="10" width="197" height="15" uuid="8bb0533a-ce42-4fc6-a5d9-a5d7e4a6af3b"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="25" width="197" height="15" uuid="5c37cfb8-af36-4e0a-8892-91bb6d334d9d"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente_nit}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="40" width="197" height="15" uuid="a65aeda4-2dc5-492d-a873-6c21710b403d"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente_direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="55" width="197" height="15" uuid="f5a04bb9-a3e7-457d-956a-c4a598ab8176"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cliente_ciudad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="10" width="128" height="15" uuid="54158a89-32b3-40f0-9266-db289262314d"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consumo_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="317" y="25" width="110" height="15" backcolor="#CCCCCC" uuid="8e4fbc7b-91c1-4f6e-8c8b-603daec1fe80"/>
+				<textElement textAlignment="Left" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[FECHA CONSUMO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="427" y="25" width="128" height="15" uuid="a26aec62-72ab-40e4-9f73-420f706a4497"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consumo_fechaConsumo}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="427" y="40" width="128" height="15" uuid="860190e0-0dfc-4d1c-a107-c0722fdd3378"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bodegaConsumo_descripcion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="108" y="0" width="108" height="15" backcolor="#CCCCCC" uuid="20e0baee-faff-428e-89e0-129d43855bbb"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[SUBPARTIDA ARANC.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="216" y="0" width="108" height="15" backcolor="#CCCCCC" uuid="538ed5df-362f-44be-a220-8f185e5e3e29"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="324" y="0" width="108" height="15" backcolor="#CCCCCC" uuid="898afcd4-567c-4092-b394-ee1c570763ac"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="108" height="15" backcolor="#CCCCCC" uuid="419fe1c1-81d5-4f12-9fa7-c799623a3016"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[CP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="432" y="0" width="108" height="15" backcolor="#CCCCCC" uuid="1b8a5e98-ff95-4f96-b333-b5aa2569dddd"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[VALOR UNITARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="540" y="0" width="108" height="15" backcolor="#CCCCCC" uuid="c2a61481-de68-4cde-871e-9d6d2df5b6e6"/>
+				<box>
+					<topPen lineWidth="1.0" lineStyle="Solid"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[TOTAL]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="108" y="0" width="108" height="15" uuid="640ad944-3653-4dba-92d1-1972b7dbebed"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto_SubpartidaArancelaria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="216" y="0" width="108" height="15" uuid="5f71f8f9-4347-4542-827f-faa12f65e094"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{producto_descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="324" y="0" width="108" height="15" uuid="01981c52-8def-418b-9593-95ae0431db83"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemConsumo_cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="108" height="15" uuid="f574cac3-bf44-4bef-9e70-342dc37e26ae"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ingresoProducto_cp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="432" y="0" width="108" height="15" uuid="24090552-27c1-4026-a709-d7f3039384ba"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemConsumo_valorUnitario}.toString()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="540" y="0" width="108" height="15" uuid="6e407cf6-1f89-4eda-a782-3634450f52ab"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{itemConsumo_total}.toString()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="87" splitType="Stretch">
+			<subreport>
+				<reportElement x="216" y="0" width="216" height="15" uuid="7e36a459-9978-413a-a41c-fe91e2c9fde7"/>
+				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="idConsumo">
+					<subreportParameterExpression><![CDATA[$P{idConsumo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubInformeCantidadTotal.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement x="432" y="0" width="216" height="15" uuid="c6074ff7-9864-4b82-9a4a-c64b75f8515d"/>
+				<subreportParameter name="SUBREPORT_DIR"/>
+				<subreportParameter name="idConsumo">
+					<subreportParameterExpression><![CDATA[$P{idConsumo}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "SubInformeValorTotalPesos.jasper"]]></subreportExpression>
+			</subreport>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="15" width="648" height="52" forecolor="#666666" uuid="cca8fdf2-5414-4cbd-b6e3-efd92fc23c97"/>
+				<textElement textAlignment="Center" rotation="None">
+					<font size="36" isBold="true" isStrikeThrough="false"/>
+				</textElement>
+				<text><![CDATA[ANULADA]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="98" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="10" y="8" width="638" height="70" uuid="33ab7caf-0abc-4990-b1d5-77a205f8666d"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="23" y="39" width="85" height="20" uuid="a7d28a8c-40d9-4af7-a419-1bb02e1af3c6"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif" size="8" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ELABORÓ:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="8" width="84" height="20" uuid="534a2d8d-7988-4b28-a9d1-0128994d70ae"/>
+				<textElement>
+					<font fontName="SansSerif" size="9" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[OBSERVACIÓN:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="108" y="39" width="399" height="20" uuid="bd26ad42-d039-4a4a-96d8-e77f35dc5150"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consumo_nombreQuienElabora}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="108" y="8" width="399" height="20" uuid="8a5d729e-3989-446d-9f50-c3b9930ffb95"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{consumo_observaciones}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

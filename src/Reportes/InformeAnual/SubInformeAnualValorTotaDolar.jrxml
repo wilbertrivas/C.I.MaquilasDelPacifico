@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="660" pageHeight="3368" columnWidth="660" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="35a06a73-a89f-43bd-9ad1-d0c54ea42b2c">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Users\\wrivas\\Music\\Proyecto_Final_Pesquera_Duvan\\Proyecto_Final_Pesquera_Duvan\\maquilas\\src\\Reportes\\Bodega\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaVentaI" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="fechaVentaF" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT REPLACE(SUM(CONVERT (decimal(20,4), [facturaVenta].[valorTotalDolarIngresados])), '.', ',')AS [valorTotalDolar]
+ FROM [maquilas].[dbo].[facturaVenta] 
+	WHERE [facturaVenta].[estado]=1 AND [facturaVenta].[fechaFactura]  BETWEEN CAST($P{fechaVentaI} AS DATE) AND CAST($P{fechaVentaF} AS DATE) ;]]>
+	</queryString>
+	<field name="valorTotalDolar" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="132" y="0" width="132" height="15" uuid="39808119-d049-43a9-8774-0d709514d1fb"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorTotalDolar}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="0" width="132" height="15" uuid="7012628b-5280-4028-ac6a-9332f926121b"/>
+				<box>
+					<topPen lineWidth="0.5"/>
+					<leftPen lineWidth="0.5"/>
+					<bottomPen lineWidth="0.5"/>
+					<rightPen lineWidth="0.5"/>
+				</box>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Times New Roman" size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SUMA TOTAL EN DOLAR]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>
